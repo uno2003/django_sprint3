@@ -89,7 +89,7 @@ class Post(PublishedModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        ordering = ['id']
+        # ordering = ['id']
 
     def __str__(self):
         return self.title
