@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
+
 from blog.models import Post, Category
 from blog.services import get_post, get_list_posts, get_category
 
@@ -31,7 +32,7 @@ class CategoryPostView(DetailView):
     template_name = 'blog/category.html'
 
     def get(self, request, category_slug: str) -> HttpResponse:
-        category_post_list = get_category(category_slug)
-        context = {'category': category_post_list[0],
-                   'post_list': category_post_list[1]}
+        category, post_list = get_category(category_slug)
+        context = {'category': category,
+                   'post_list': post_list}
         return render(request, self.template_name, context)

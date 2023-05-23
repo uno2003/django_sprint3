@@ -1,45 +1,35 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
-from blog.models import Post, Category
+from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
+from blog.models import Category, Post
 
-def get_list_posts() -> dict:
-    now = timezone.now()
+
+def get_query() -> QuerySet[Post]:
     post_list = (
         Post.objects
         .select_related('category')
         .filter(is_published=True,
                 category__is_published=True,
-                pub_date__lte=now)[0:5]
+                pub_date__lte=timezone.now())
     )
     return post_list
 
 
-def get_post(id: int) -> dict:
-    now = timezone.now()
-    try:
-        post = Post.objects.get(id=id)
-        if not post.is_published \
-                or not post.category.is_published \
-                or post.pub_date > now:
-            raise Http404('Заданный пост не доступен')
-    except ObjectDoesNotExist:
-        raise Http404('Заданный пост не существует')
-    return post
+def get_list_posts() -> QuerySet[Post]:
+    return get_query()[0:5]
 
 
-def get_category(category_slug: str) -> list[dict]:
-    now = timezone.now()
-    category = Category.objects.get(slug=category_slug)
-    if not category.is_published:
-        raise Http404('Заданная категория не доступна')
-    post_list = (
-        Post.objects
-        .select_related('category')
-        .filter(category=category,
-                is_published=True,
-                category__is_published=True,
-                pub_date__lte=now)
+def get_post(id: int) -> Post:
+    return get_object_or_404(get_query(), id=id)
+
+
+def get_category(category_slug: str) -> tuple[Category, QuerySet[Post]]:
+    category = get_object_or_404(
+        Category.objects
+        .only('title', 'description')
+        .filter(slug=category_slug,
+                is_published=True)
     )
-    return [category, post_list]
+    post_list = get_query().filter(category=category)
+    return category, post_list
