@@ -29,7 +29,7 @@ def get_post(id: int) -> dict:
     return post
 
 
-def get_category(category_slug: str) -> list:
+def get_category(category_slug: str) -> list[dict]:
     now = timezone.now()
     category = Category.objects.get(slug=category_slug)
     if not category.is_published:
