@@ -33,11 +33,13 @@ def get_category(category_slug: str) -> list:
     category = Category.objects.get(slug=category_slug)
     if not category.is_published:
         raise Http404('Заданная категория не доступна')
-    post_list = Post.objects \
-                    .select_related('category') \
-                    .filter(
-                                 category=category,
-                                 is_published=True,
-                                 category__is_published=True,
-                                 pub_date__lte=now)
+    post_list = (
+        Post.objects
+        .select_related('category')
+        .filter(
+            category=category,
+            is_published=True,
+            category__is_published=True,
+            pub_date__lte=now)
+        )
     return [category, post_list]
