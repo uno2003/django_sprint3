@@ -36,11 +36,9 @@ def get_category(category_slug: str) -> list:
     post_list = (
         Post.objects
         .select_related('category')
-        .filter(
-            category=category,
-            is_published=True,
-            category__is_published=True,
-            pub_date__lte=now
-        )
-        )
+        .filter(category=category,
+                is_published=True,
+                category__is_published=True,
+                pub_date__lte=now)
+    )
     return [category, post_list]
