@@ -20,7 +20,7 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/detail.html'
 
-    def get(self, request, id: int, **kwargs) -> HttpResponse:
+    def get(self, request, id: int) -> HttpResponse:
         post = get_post(id)
         context = {'post': post}
         return render(request, self.template_name, context)
