@@ -6,12 +6,13 @@ from django.utils import timezone
 
 def get_list_posts() -> dict:
     now = timezone.now()
-    post_list = Post.objects \
-                    .select_related('category') \
-                    .filter(
-                            is_published=True,
-                            category__is_published=True,
-                            pub_date__lte=now)[0:5]
+    post_list = (
+        Post.objects
+        .select_related('category')
+        .filter(is_published=True,
+                category__is_published=True,
+                pub_date__lte=now)[0:5]
+    )
     return post_list
 
 
