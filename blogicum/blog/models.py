@@ -2,18 +2,21 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-
 User = get_user_model()
+
+
 class PublishedModel(models.Model):
     is_published = models.BooleanField(
         default=True,
         null=False,
         verbose_name='Опубликовано',
-        help_text= 'Снимите галочку, чтобы скрыть публикацию.')
+        help_text='Снимите галочку, чтобы скрыть публикацию.'
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         null=False,
-        verbose_name='Добавлено')
+        verbose_name='Добавлено'
+    )
 
     class Meta:
         abstract = True
@@ -30,8 +33,8 @@ class Category(PublishedModel):
         unique=True,
         null=False,
         verbose_name='Идентификатор',
-        help_text= 'Идентификатор страницы для URL; разрешены'
-                   ' символы латиницы, цифры, дефис и подчёркивание.')
+        help_text='Идентификатор страницы для URL; разрешены'
+                  ' символы латиницы, цифры, дефис и подчёркивание.')
 
     def __str__(self):
         return self.title
@@ -73,19 +76,20 @@ class Post(PublishedModel):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name = 'Автор публикации')
+        verbose_name='Автор публикации')
     location = models.ForeignKey(
         Location,
         on_delete=models.SET_NULL,
         null=True,
-        blank= False,
+        blank=False,
         verbose_name='Местоположение')
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
-        blank= False,
+        blank=False,
         verbose_name='Категория')
+
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
