@@ -40,6 +40,7 @@ def get_category(category_slug: str) -> list:
             category=category,
             is_published=True,
             category__is_published=True,
-            pub_date__lte=now)
+            pub_date__lte=now
+        )
         )
     return [category, post_list]
