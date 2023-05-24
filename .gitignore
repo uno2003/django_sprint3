@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+blogicum/.env
 .venv
 env/
 venv/
@@ -148,4 +148,6 @@ dmypy.json
 # папки со статикой и медиа
 media/
 ./blogicum/db.json
+./db.json
+./blogicum/.env
 tests/
