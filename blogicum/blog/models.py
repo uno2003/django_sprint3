@@ -5,7 +5,7 @@ from django.urls import reverse
 User = get_user_model()
 
 
-class PublishedModel(models.Model):
+class BaseModel(models.Model):
     is_published = models.BooleanField(
         default=True,
         null=False,
@@ -22,7 +22,7 @@ class PublishedModel(models.Model):
         abstract = True
 
 
-class Category(PublishedModel):
+class Category(BaseModel):
     title = models.CharField(
         max_length=256,
         blank=False,
@@ -47,7 +47,7 @@ class Category(PublishedModel):
         verbose_name_plural = 'Категории'
 
 
-class Location(PublishedModel):
+class Location(BaseModel):
     name = models.CharField(
         max_length=256,
         null=False,
@@ -61,7 +61,7 @@ class Location(PublishedModel):
         return self.name
 
 
-class Post(PublishedModel):
+class Post(BaseModel):
     title = models.CharField(
         max_length=256,
         blank=False,
